@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+<title>Iterasyon 3</title>
+</h:head>
+
+<h:body>
+
+	<p:ajaxStatus onstart="statusDialog.show();"
+		onsuccess="statusDialog.hide();"
+		onerror="statusDialog.hide(); alert('Bir hata oluştu');" />
+
+	<p:dialog modal="true" widgetVar="statusDialog"
+		header="Lütfen bekleyiniz." draggable="false" closable="false">
+		<p:graphicImage value="../../images/ajaxloadingbar.gif" />
+	</p:dialog>
+
+	<table class="main-table">
+		<tr>
+			<td colspan="2">
+				<div class="mainHeaderClass">
+					<div>
+						<a href="#" class="headerLogo fLeft"></a>
+						<h1 class="headerTitle fLeft"></h1>
+						<img src="../../images/logo.PNG"  />
+
+					</div>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<!-- <f:subview id="menu_subview" rendered="#{userMB.authenticated}"> -->
+			<h:form>
+			<f:subview id="menu_subview">
+				<td style="vertical-align: top;"><p:menu>
+						<p:submenu label="Menü">
+							<p:menuitem value="Müşteriler" url="kisi.xhtml"
+								icon="ui-icon-contact" />
+
+						</p:submenu>
+					</p:menu></td>
+			</f:subview>
+			</h:form>
+			<td style="vertical-align: top; width: 100%;"><ui:insert
+					name="content">
+				  	Content area.  See comments below this line in the source.
+				</ui:insert></td>
+		</tr>
+	</table>
+	<!--  
+    <div class="mainFooterClass">
+    	<div>
+		    <a href="http://www.ardela.com" target="_blank"><img class="fRight" src="../../images/ardela-logo.png" /></a>
+        	<span class="fRight">Powered By:</span>
+            <hr class="clearfix" />
+        </div>
+    </div>
+    -->
+</h:body>
+
+</html>

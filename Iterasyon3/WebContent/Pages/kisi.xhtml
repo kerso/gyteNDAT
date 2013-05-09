@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<ui:composition template="template.xhtml">
+	<ui:define name="content">
+		<p:panel header="Musteriler" toggleable="true" toggleSpeed="500">
+			<h:form id="list_form">
+				<p:messages id="messages" globalOnly="true" />
+				
+				<p:dataTable id="grid" var="musteriler" binding="#{grid}"
+					value="#{musterilerMB.musterilerListesi}"
+					widgetVar="musterilerTable"
+					emptyMessage="Gösterilecek bir sonuç yok." resizableColumns="true">
+
+					<f:facet  name="header" >
+						<p:outputPanel layout="inline" style="float: left;">
+							<p:commandButton value="Yeni Kayıt"
+								actionListener="#{musterilerMB.resetForm}"
+								oncomplete="dlg.show();" update=":edit_form" icon="ui-icon-disk">
+								<pe:resetInput for="edit_form" />
+							</p:commandButton>
+						</p:outputPanel>
+					</f:facet>
+
+					<p:column style="width: 5%">
+						<p:commandButton id="selectButton" update="@form,:edit_form"
+							icon="ui-icon-pencil" onclick="dlg.show();"
+							action="#{musterilerMB.onRowSelected}">
+							<f:setPropertyActionListener value="#{musteriler}"
+								target="#{musterilerMB.secilenMusteri}" />
+							<pe:resetInput for=":edit_form" />
+						</p:commandButton>
+					</p:column>
+
+
+					<p:column headerText="Musteri Ismi" sortBy="#{musteriler.name}">
+			            #{musteriler.name}
+			        </p:column>
+
+					<p:column headerText="Musteri Soyismi" sortBy="#{musteriler.surname}">
+			            #{musteriler.surname}
+			        </p:column>
+			        
+			        <p:column headerText="Musteri Şifresi" sortBy="#{musteriler.password}">
+			            #{musteriler.password}
+			        </p:column>
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+
+
+		<p:dialog id="modalDialog" header="Müsteri Tanımlamaları" widgetVar="dlg"
+			modal="true">
+
+			<h:form id="edit_form" prependId="false">
+				<p:panelGrid columns="3" id="form_panel" styleClass="form-panel"
+					columnClasses="form-label,form-field">
+
+					<h:outputLabel value="Musteri Ismi" />
+					<p:inputText id="isim_text" value="#{musterilerMB.secilenMusteri.name}"
+						required="true" />
+						<p:message for="isim_text" redisplay="false" />
+						
+						<h:outputLabel value="Musteri Soyismi" />
+					<p:inputText id="soyism_text" value="#{musterilerMB.secilenMusteri.surname}"
+						required="true" />
+						<p:message for="soyism_text" redisplay="false" />
+						
+						<h:outputLabel value="Musteri Şifresi" />
+					<p:inputText id="sifre_text" value="#{musterilerMB.secilenMusteri.password}"
+						required="true" />
+						<p:message for="sifre_text" redisplay="false" />
+						
+					
+
+
+					<f:facet name="footer">
+						<p:commandButton id="reset_button" value="Temizle"
+							actionListener="#{musterilerMB.resetForm}" update="@form"
+							process="@this" icon="ui-icon-arrowreturnthick-1-w">
+							<pe:resetInput for="edit_form" />
+						</p:commandButton>
+						<p:commandButton rendered="#{musterilerMB.secilenMusteri.id > 0}"
+							value="Sil" actionListener="#{musterilerMB.delete}"  update="@form,:list_form"
+							icon="ui-icon-closethick" />
+						<p:commandButton
+							value="#{musterilerMB.secilenMusteri.id > 0 ? 'Güncelle' : 'Yeni Kayıt'}"
+							actionListener="#{musterilerMB.save}" update="@form,:list_form"
+							 icon="ui-icon-disk" />
+					</f:facet>
+
+					<p:confirmDialog message="Silmek istediğinize emin misiniz?"
+						header="Uyarı!" severity="alert" widgetVar="deleteConfirmation"
+						appendToBody="true">
+						<p:commandButton id="confirm" value="Evet"
+							actionListener="#{musterilerMB.delete}" update="@form,:list_form"
+							onclick="deleteConfirmation.hide()" process="@this"
+							oncomplete="dlg.hide()" icon="ui-icon-circle-check">
+							<pe:resetInput for="edit_form" />
+						</p:commandButton>
+						<p:commandButton id="decline" value="Hayır"
+							onclick="deleteConfirmation.hide()" type="button"
+							icon="ui-icon-circle-close" />
+					</p:confirmDialog>
+				</p:panelGrid>
+				<p />
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>
